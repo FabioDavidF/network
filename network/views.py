@@ -71,8 +71,8 @@ def createPost(request):
         post_data = json.loads(request.body)
         post_body = post_data.get('body')
         post = Post(
-            author=request.user
-            body=post_body
+            author=request.user,
+            body=post_body,
             time=post_time
         )
         post.save()
