@@ -18,4 +18,3 @@ class Comment(models.Model):
     body = models.TextField(max_length=500)
     time = models.DateTimeField() #Added when creating object with the API
     likes = models.IntegerField(default=0)
-
