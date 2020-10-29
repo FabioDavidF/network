@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // adding onsubmit to new post
     document.querySelector('#new-post-form').onsubmit = function () {
+        // FIX THIS SHIT TOMORROW FABIO
 
         // Getting the csrf cookie
         function getCookie(name) {
