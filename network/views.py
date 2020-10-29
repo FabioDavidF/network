@@ -83,16 +83,21 @@ def createPost(request):
 
 
 def getPosts(request, kind):
-    if kind =='all':
-        posts = Post.objects.all()
-        posts = posts.order_by('-time').all
-        return JsonResponse([post.serialize() for post in posts], safe=False)
-    elif kind == 'following':
-        dict_list = []   
-        for user in request.user.following.all()
-            posts = Post.objects.filter(author=user)
-            for post in posts:
-                dic = post.serialize()
-                dict_list.append(dic)
-        
-        return JsonResponse(dict_list, safe=False)
+    if request.method != 'GET':
+        return JsonResponse({'error': 'GET request required.'}, status=400)
+    else:
+        if kind =='all':
+            posts = Post.objects.all()
+            posts = posts.order_by('-time').all
+            return JsonResponse([post.serialize() for post in posts], safe=False)
+        elif kind == 'following':
+            dict_list = []   
+            for user in request.user.following.all():
+                posts = Post.objects.filter(author=user)
+                for post in posts:
+                    dic = post.serialize()
+                    dict_list.append(dic)
+            
+            return JsonResponse(dict_list, safe=False)
+        else:
+            return JsonResponse({'error': 'Invalid posts kind, use /all or /following.'}, status=400)
