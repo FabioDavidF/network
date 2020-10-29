@@ -82,5 +82,17 @@ def createPost(request):
         return JsonResponse({'error': 'POST request required.'}, status=400)
 
 
-def getPosts(request):
-    pass
+def getPosts(request, kind):
+    if kind =='all':
+        posts = Post.objects.all()
+        posts = posts.order_by('-time').all
+        return JsonResponse([post.serialize() for post in posts], safe=False)
+    elif kind == 'following':
+        dict_list = []   
+        for user in request.user.following.all()
+            posts = Post.objects.filter(author=user)
+            for post in posts:
+                dic = post.serialize()
+                dict_list.append(dic)
+        
+        return JsonResponse(dict_list, safe=False)

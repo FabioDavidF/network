@@ -12,6 +12,14 @@ class Post(models.Model):
     time = models.DateTimeField() #Added when creating object with the API
     likes = models.IntegerField(default=0)
 
+    def serialize(self):
+        return {
+            'author': self.author,
+            'body': self.body,
+            'time': self.time,
+            'likes': self.time
+        }
+
 class Comment(models.Model):
     post_commented = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='c_post')
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='c_author')
