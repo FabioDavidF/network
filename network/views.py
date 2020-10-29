@@ -80,3 +80,7 @@ def createPost(request):
 
     else:
         return JsonResponse({'error': 'POST request required.'}, status=400)
+
+
+def getPosts(request):
+    pass
