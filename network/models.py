@@ -14,10 +14,11 @@ class Post(models.Model):
 
     def serialize(self):
         return {
+            'id': self.id,
             'author': self.author,
             'body': self.body,
             'time': self.time,
-            'likes': self.time
+            'likes': self.likes
         }
 
 class Comment(models.Model):
