@@ -88,8 +88,12 @@ def getPosts(request, kind):
     else:
         if kind =='all':
             posts = Post.objects.all()
-            posts = posts.order_by('-time').all
-            return JsonResponse([post.serialize() for post in posts], safe=False)
+            posts = posts.order_by('-time').all()
+            ls = []
+            for post in posts:
+                post.serialize()
+                ls.append(post)
+            return JsonResponse(ls, safe=False)
         elif kind == 'following':
             dict_list = []   
             for user in request.user.following.all():
