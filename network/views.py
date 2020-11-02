@@ -91,8 +91,8 @@ def getPosts(request, kind):
             posts = posts.order_by('-time').all()
             ls = []
             for post in posts:
-                post.serialize()
-                ls.append(post)
+                new_post = post.serialize()
+                ls.append(new_post)
             return JsonResponse(ls, safe=False)
         elif kind == 'following':
             dict_list = []   
