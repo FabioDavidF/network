@@ -3,21 +3,25 @@
 
 {% block body %}
     <div class="container">
-        <div class="container border rounded" id='new-post-view' style='margin: 1rem;'>
-            <div class='row' style='margin: 0.5rem;'><h3>New Post</h3></div>
+        <div class="row">
+            <div class="container border rounded" id='new-post-view' style='margin: 1rem;'>
+                <div class='row' style='margin: 0.5rem;'><h3>New Post</h3></div>
 
-            <div class='row'>
-                <form id='new-post-form' for='content'>
-                    {% csrf_token %}
-                    <textarea name="body" id="content" cols="30" rows="10" class="form-control" style='margin: 1rem; max-height: 5rem; width: 67rem;' maxlength='500'></textarea>
+                <div class='row'>
+                    <form id='new-post-form' for='content'>
+                        {% csrf_token %}
+                        <textarea name="body" id="content" cols="30" rows="10" class="form-control" style='margin: 1rem; max-height: 5rem; width: 67rem;' maxlength='500'></textarea>
 
-                    <button type='submit' class='btn btn-outline-primary' style='margin-left: 1rem; margin-bottom: 0.5rem;'>Post</button>
-                </form>
-             </div>
+                        <button type='submit' class='btn btn-outline-primary' style='margin-left: 1rem; margin-bottom: 0.5rem;'>Post</button>
+                    </form>
+                </div>
+            </div>
         </div>
 
-        <div class="container" id='posts-view'>
-            
+        <div class="row">
+            <div class="container" id='posts-view'>
+                
+            </div>
         </div>
 
     </div>
