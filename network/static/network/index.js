@@ -35,11 +35,15 @@ function renderPost(post) {
     div.className = 'container border rounded'
     div.style = 'margin-top: 1rem;'
     div.innerHTML = `
-    <h3 class='row' style='margin-left: 0.5rem; margin-right: 0.5rem;'>${post.author}</h3>
+    <h3 class='row' style='margin-left: 0.5rem; margin-right: 0.5rem; margin-top: 0.5rem;'>${post.author}</h3>
     <p class='row' style='margin-left: 0.5rem; margin-right: 0.5rem;'>${post.body}</p>
     <div class='row' style='margin-left: 0.5rem; margin-right: 0.5rem;'>
-    <h5>${post.likes}</h5>
-    <p class='justify-content-end'>${post.time}</p>
+        <div class='col'>
+            <h5 class='row justify-content-start'>${post.likes}</h5>
+        </div>
+        <div class='col'>
+            <p class='row justify-content-end'>${post.time}</p>
+        </div>
     </div>
     `
     var doc_div = document.querySelector('#posts-view')
