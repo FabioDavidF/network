@@ -67,7 +67,8 @@ def register(request):
 def createPost(request):
     if request.method == 'POST':
         #Getting the datetime not to show the seconds and microseconds
-        post_time = datetime.now().isoformat(timespec='minutes')
+        time = datetime.now()
+        post_time = time.strftime('%b %d, %H:%M')
         post_data = json.loads(request.body)
         post_body = post_data.get('post_content')
         post = Post(

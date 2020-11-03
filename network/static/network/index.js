@@ -32,12 +32,15 @@ function getPosts(kind) {
 
 function renderPost(post) {
     var div = document.createElement('div')
-    div.className = 'row border rounded'
+    div.className = 'container border rounded'
+    div.style = 'margin-top: 1rem;'
     div.innerHTML = `
-    <h3>${post.author}</h3>
-    <p>${post.body}</p>
+    <h3 class='row' style='margin-left: 0.5rem; margin-right: 0.5rem;'>${post.author}</h3>
+    <p class='row' style='margin-left: 0.5rem; margin-right: 0.5rem;'>${post.body}</p>
+    <div class='row' style='margin-left: 0.5rem; margin-right: 0.5rem;'>
     <h5>${post.likes}</h5>
-    <p>${post.time}</p>
+    <p class='justify-content-end'>${post.time}</p>
+    </div>
     `
     var doc_div = document.querySelector('#posts-view')
     doc_div.appendChild(div)
