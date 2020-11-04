@@ -37,10 +37,12 @@ function renderPost(post) {
 
     // First of all we need to get an url for the author's profile
     // I did this through a fetch request so maintainability is better
+    
     fetch(`get-url/${post.author}`)
     .then(response => response.json())
     .then(object => { var url = object['url']
         // Then we create the post div like this
+
         var div = document.createElement('div')
         div.className = 'container border rounded'
         div.style = 'margin-top: 1rem;'
