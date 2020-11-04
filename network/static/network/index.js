@@ -23,6 +23,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 function getPosts(kind) {
+    // Clearing out the posts
+    document.querySelector('#posts-view').innerHTML = ''
+
     fetch(`posts/${kind}`)
     .then(response => response.json())
     .then(posts => {
@@ -31,21 +34,37 @@ function getPosts(kind) {
 }
 
 function renderPost(post) {
-    var div = document.createElement('div')
-    div.className = 'container border rounded'
-    div.style = 'margin-top: 1rem;'
-    div.innerHTML = `
-    <h3 class='row' style='margin-left: 0.5rem; margin-right: 0.5rem; margin-top: 0.5rem;'>${post.author}</h3>
-    <p class='row' style='margin-left: 0.5rem; margin-right: 0.5rem;'>${post.body}</p>
-    <div class='row' style='margin-left: 0.5rem; margin-right: 0.5rem;'>
-        <div class='col'>
-            <h5 class='row justify-content-start'>${post.likes}</h5>
+
+    // First of all we need to get an url for the author's profile
+    // I did this through a fetch request so maintainability is better
+    fetch(`get-url/${post.author}`)
+    .then(response => response.json())
+    .then(object => { var url = object['url']
+        // Then we create the post div like this
+        var div = document.createElement('div')
+        div.className = 'container border rounded'
+        div.style = 'margin-top: 1rem;'
+        div.innerHTML = `
+        <a href="${url}" style='text-decoration: none; color: inherit;'>
+
+        <h3 class='row' style='margin-left: 0.5rem; margin-right: 0.5rem; margin-top: 0.5rem;'>${post.author}</h3>
+
+        </a>
+
+        <p class='row' style='margin-left: 0.5rem; margin-right: 0.5rem;'>${post.body}</p>
+
+        <div class='row' style='margin-left: 0.5rem; margin-right: 0.5rem;'>
+            <div class='col'>
+                <h5 class='row justify-content-start'>${post.likes}</h5>
+            </div>
+
+            <div class='col'>
+                <p class='row justify-content-end'>${post.time}</p>
+            </div>
         </div>
-        <div class='col'>
-            <p class='row justify-content-end'>${post.time}</p>
-        </div>
-    </div>
-    `
-    var doc_div = document.querySelector('#posts-view')
-    doc_div.appendChild(div)
+        `
+        var doc_div = document.querySelector('#posts-view')
+        doc_div.appendChild(div)
+    }) 
 }
+

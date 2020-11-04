@@ -90,11 +90,11 @@ def getPosts(request, kind):
         if kind =='all':
             posts = Post.objects.all()
             posts = posts.order_by('-time').all()
-            ls = []
+            dict_list = []
             for post in posts:
                 new_post = post.serialize()
-                ls.append(new_post)
-            return JsonResponse(ls, safe=False)
+                dict_list.append(new_post)
+            return JsonResponse(dict_list, safe=False)
         elif kind == 'following':
             dict_list = []   
             for user in request.user.following.all():
@@ -106,3 +106,12 @@ def getPosts(request, kind):
             return JsonResponse(dict_list, safe=False)
         else:
             return JsonResponse({'error': 'Invalid posts kind, use /all or /following.'}, status=400)
+
+def viewProfile(request, profile_name):
+    #Have to make this
+    return HttpResponse('<h1>YEET</h1>')
+
+def getUrl(request, user):
+    username = User.objects.get(username=user).username
+    url = reverse('view_profile', kwargs={'profile_name': username})
+    return JsonResponse({'url': url})
