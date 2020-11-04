@@ -108,8 +108,23 @@ def getPosts(request, kind):
             return JsonResponse({'error': 'Invalid posts kind, use /all or /following.'}, status=400)
 
 def viewProfile(request, profile_name):
-    #Have to make this
-    return HttpResponse('<h1>YEET</h1>')
+    user = User.objects.get(username=profile_name)
+
+    objects = Post.objects.filter(author=user.id).order_by('-time')
+    posts = []
+    for post in objects:
+        serialized_post = post.serialize()
+        posts.append(serialized_post)
+    
+    followers = user.followers.count()
+    following = user.following.count()
+    return render(request, 'network/profile.html', {
+        'username': user.username,
+        'followers_count': followers,
+        'following_count': following,
+        'posts': posts,
+        'followers': user.followers
+    })
 
 def getUrl(request, user):
     username = User.objects.get(username=user).username
