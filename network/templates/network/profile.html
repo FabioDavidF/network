@@ -13,11 +13,8 @@
             </div>
             <div class="row" style='margin: 0.5rem;'>
                 {% if user.username != username %}
-                    {% if user in followers.all %}
-                        <button class='btn btn-outline-primary' id='unfollow-button'>Unfollow</button>
-                    {% else %}
-                        <button class='btn btn-outline-primary' id='follow-button'>Follow</button>
-                    {% endif %}
+                    <button class='btn btn-outline-primary' id='unfollow-button'>Unfollow</button>
+                    <button class='btn btn-outline-primary' id='follow-button'>Follow</button>
                 {% endif %}
             </div>
         </div>

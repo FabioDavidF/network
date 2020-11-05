@@ -162,6 +162,12 @@ def follow(request, profile_name):
     else:
         return JsonResponse({'error': 'Invalid request method, use PUT'})
 
-def unfollow(request, user):
-    pass
+
+def isFollowing(request, profile_name):
+    user = request.user
+    profile = User.objects.get(username=profile_name)
+    if user in profile.followers.all():
+        return JsonResponse({'state': True})
+    else:
+        return JsonResponse({'state': False})
     
