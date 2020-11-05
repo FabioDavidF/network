@@ -11,5 +11,7 @@ urlpatterns = [
     path('create', views.createPost, name='create_post'),
     path('posts/<kind>', views.getPosts, name='get_posts'),
     path('get-url/<user>', views.getUrl, name='get_url'),
-    path('user/<profile_name>', views.viewProfile, name='view_profile')
+    path('user/<profile_name>', views.viewProfile, name='view_profile'),
+    path('user/<profile_name>/follow', views.follow, name='follow'),
+    path('user/<profile_name>/unfollow', views.unfollow, name='follow')
 ]

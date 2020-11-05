@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
         fetch('/create', {
             method: 'POST',
             mode: 'same-origin',
+            credentials: 'include',
             headers: {
                 'X-CSRFToken': csrftoken
               },

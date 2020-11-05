@@ -130,3 +130,31 @@ def getUrl(request, user):
     username = User.objects.get(username=user).username
     url = reverse('view_profile', kwargs={'profile_name': username})
     return JsonResponse({'url': url})
+
+def follow(request, profile_name):
+    user_object = User.objects.get(username=profile_name)
+    
+    if request.method == 'PUT':
+        print(request.user)
+        data = json.loads(request.body)
+
+        if data.get('follow') == True:
+            followers_set = user_object.followers
+            followers_set.add(request.user)
+            user_object.save()
+            return JsonResponse({'status': 'success'}, status=204)
+            
+        if data.get('follow') == False:
+            followers_set = user_object.followers
+            followers_set.exclude(username=request.user.username)
+            user_object.save()
+            return HttpResponse(status=204)
+
+        else:
+            return JsonResponse({'error': 'Invalid body, use read=true or false'})
+    else:
+        return JsonResponse({'error': 'Invalid request method, use PUT'})
+
+def unfollow(request, user):
+    pass
+    
