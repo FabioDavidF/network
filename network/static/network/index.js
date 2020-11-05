@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     // by default load all posts page
+    getPosts('all')
 
     // adding onsubmit to new post
     document.querySelector('#new-post-form').onsubmit = function () {
