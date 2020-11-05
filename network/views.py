@@ -142,6 +142,9 @@ def follow(request, profile_name):
             followers_set = user_object.followers
             followers_set.add(request.user)
             user_object.save()
+            folower = request.user
+            follower.following.add(user_object)
+            follower.save()
             return JsonResponse({'status': 'success'}, status=204)
             
         if data.get('follow') == False:
