@@ -133,6 +133,7 @@ def getUrl(request, user):
 
 def follow(request, profile_name):
     receiver = User.objects.get(username=profile_name)
+    print(request.user)
     
     if request.method == 'PUT':
         data = json.loads(request.body)
@@ -146,12 +147,13 @@ def follow(request, profile_name):
             follower.save()
             return JsonResponse({'status': 'success'}, status=204)
             
-        if data.get('follow') == False:
-            followers_set = receiver_object.followers
-            followers_set.exclude(username=request.user.username)
+        elif data.get('follow') == False:
+            followers_set = receiver.followers.filter(username=request.user.username)
+            followers_set.delete()
             receiver.save()
             follower = request.user
-            follower.following.exclude(username=receiver.username)
+            following = request.user.following.filter(username=receiver.username)
+            following.delete()
             follower.save()
             return HttpResponse(status=204)
 
