@@ -170,4 +170,11 @@ def isFollowing(request, profile_name):
         return JsonResponse({'state': True})
     else:
         return JsonResponse({'state': False})
+
+def followInfo(request, profile_name):
+    profile = User.objects.get(username=profile_name)
+    followers = profile.followers.count()
+    following = profile.following.count()
+    print({'followers': followers, 'following': following})
+    return JsonResponse({'followers': followers, 'following': following})
     

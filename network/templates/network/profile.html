@@ -9,7 +9,7 @@
                 <h4 >{{ username }}</h4>
             </div>
             <div class="row" style='margin-left: 0.5rem;'>
-                <h6>{{followers_count}} Followers</h6> <h6 style='margin-left: 1rem;'>{{following_count}} Following</h6>
+                <h6 id='followers-count'>{{followers_count}} Followers</h6> <h6 id='following-count' style='margin-left: 1rem;'>{{following_count}} Following</h6>
             </div>
             <div class="row" style='margin: 0.5rem;'>
                 {% if user.username != username %}
