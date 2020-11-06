@@ -133,7 +133,6 @@ def getUrl(request, user):
 
 def follow(request, profile_name):
     receiver = User.objects.get(username=profile_name)
-    print(request.user)
     
     if request.method == 'PUT':
         data = json.loads(request.body)
