@@ -156,7 +156,7 @@ def follow(request, profile_name):
             follower = request.user
             following_set = follower.following
             following_instance = follower.following.get(username=profile_name)
-            following.remove(following_instance)
+            following_set.remove(following_instance)
             follower.save()
             return HttpResponse(status=204)
 
