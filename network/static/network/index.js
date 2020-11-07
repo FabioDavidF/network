@@ -3,7 +3,9 @@ document.addEventListener('DOMContentLoaded', () => {
     getPosts('all')
 
     // Adding the onclick to the following button
-    document.querySelector('#following-button').onclick = () => {getPosts('following')}
+    document.querySelector('#following-button').onclick = function () {
+        console.log('yeet')
+        getPosts('following')}
 
     // adding onsubmit to new post
     document.querySelector('#new-post-form').onsubmit = function () {
@@ -35,6 +37,7 @@ function getPosts(kind) {
     fetch(`posts/${kind}`)
     .then(response => response.json())
     .then(posts => {
+        console.log(posts)
         posts.forEach(renderPost)
     })
 }
