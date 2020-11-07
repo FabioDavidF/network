@@ -149,12 +149,14 @@ def follow(request, profile_name):
             return JsonResponse({'status': 'success'}, status=204)
             
         elif data.get('follow') == False:
-            followers_set = receiver.followers.filter(username=request.user.username)
-            followers_set.delete()
+            followers_set = receiver.followers
+            follower_instance = receiver.followers.get(pk=request.user.id)
+            followers_set.remove(follower_instance)
             receiver.save()
             follower = request.user
-            following = request.user.following.filter(username=receiver.username)
-            following.delete()
+            following_set = follower.following
+            following_instance = follower.following.get(username=profile_name)
+            following.remove(following_instance)
             follower.save()
             return HttpResponse(status=204)
 

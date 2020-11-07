@@ -12,7 +12,7 @@
                 <h6 id='followers-count'>{{followers_count}} Followers</h6> <h6 id='following-count' style='margin-left: 1rem;'>{{following_count}} Following</h6>
             </div>
             <div class="row" style='margin: 0.5rem;'>
-                {% if user.username != username %}
+                {% if user.username != username and user.is_authenticated %}
                     <button class='btn btn-outline-primary' id='unfollow-button'>Unfollow</button>
                     <button class='btn btn-outline-primary' id='follow-button'>Follow</button>
                 {% endif %}
