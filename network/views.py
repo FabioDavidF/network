@@ -161,7 +161,6 @@ def follow(request, profile_name):
     else:
         return JsonResponse({'error': 'Invalid request method, use PUT'})
 
-
 def isFollowing(request, profile_name):
     user = request.user
     profile = User.objects.get(username=profile_name)
@@ -176,4 +175,13 @@ def followInfo(request, profile_name):
     following = profile.following.count()
     print({'followers': followers, 'following': following})
     return JsonResponse({'followers': followers, 'following': following})
-    
+
+def following(request):
+    following = request.user.following.all()
+    post_list = []
+    for followee in following:
+        posts = Post.objects.filter(pk=followee.id)
+        for post in posts:
+            serialized_post = post.serialize()
+            post_list.append(serialized_post)
+    return JsonResponse

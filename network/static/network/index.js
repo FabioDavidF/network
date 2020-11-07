@@ -2,6 +2,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // by default load all posts page
     getPosts('all')
 
+    // Adding the onclick to the following button
+    document.querySelector('#following-button').onclick = () => {getPosts('following')}
+
     // adding onsubmit to new post
     document.querySelector('#new-post-form').onsubmit = function () {
         
@@ -19,6 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
             })
         })
         .then(result => console.log(result))
+        .then(function () {getPosts('all')})
     return false;
     }
 })
