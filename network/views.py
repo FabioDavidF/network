@@ -96,14 +96,16 @@ def getPosts(request, kind):
                 dict_list.append(new_post)
             return JsonResponse(dict_list, safe=False)
         elif kind == 'following':
-            dict_list = []   
-            for user in request.user.following.all():
-                posts = Post.objects.filter(author=user)
-                for post in posts:
-                    dic = post.serialize()
-                    dict_list.append(dic)
-            
-            return JsonResponse(dict_list, safe=False)
+            if request.user.is_authenticated():
+                dict_list = []   
+                for user in request.user.following.all():
+                    posts = Post.objects.filter(author=user)
+                    for post in posts:
+                        dic = post.serialize()
+                        dict_list.append(dic)
+                return JsonResponse(dict_list, safe=False)
+            else:
+                return HttpResponseRedirect(reverse('index'))
         else:
             return JsonResponse({'error': 'Invalid posts kind, use /all or /following.'}, status=400)
 
