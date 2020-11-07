@@ -96,7 +96,7 @@ def getPosts(request, kind):
                 dict_list.append(new_post)
             return JsonResponse(dict_list, safe=False)
         elif kind == 'following':
-            if request.user.is_authenticated():
+            if request.user.is_authenticated:
                 dict_list = []   
                 for user in request.user.following.all():
                     posts = Post.objects.filter(author=user)
