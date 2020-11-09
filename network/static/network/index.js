@@ -120,7 +120,9 @@ async function renderPost(post) {
         if (username == post.author) {
         var edit = document.createElement('div')
         edit.innerHTML = `
+        <button class='btn btn-outline-primary' style='margin-bottom: 0.5rem;'>
         <a href='#' style='text-decoration: none; color: inherit;'>Edit Post</a>
+        </button>
         `
         edit.onclick = () => {
             div.innerHTML = `
