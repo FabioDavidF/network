@@ -1,4 +1,10 @@
 document.addEventListener('DOMContentLoaded', async () => {
+    document.querySelector('#following-button').onclick = () => {
+        window.location.replace('http://localhost:8000')
+        
+        return false;
+    }
+
     getPosts(1)
 
     var f_button = document.querySelector('#follow-button');
