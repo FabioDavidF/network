@@ -226,3 +226,19 @@ def editPost(request, post_id):
         return HttpResponse(status=200)
     else:
         return HttpResponseRedirect(reverse('index'))
+
+def like(request, post_id):
+    if request.method == 'POST' and request.user.is_authenticated:
+        user = request.user
+        post = Post.objects.get(pk=post_id)
+        data = json.loads(request.body)
+        like = data.get('like')
+        if like == True:
+            post.likes.add(user)
+            post.save
+            return HttpResponse(status=200)
+        elif like == False:
+            liker_instance = post.likes.get(pk=user.id)
+            post.likes.remove(liker_instance)
+            post.save()
+            return HttpResponse(status=200)

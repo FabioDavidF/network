@@ -161,3 +161,18 @@ async function renderPost(post) {
     }) 
 }
 
+function like (post_id) {
+    fetch(`like/${post_id}`, {
+        method: 'POST',
+        mode: 'same-origin',
+        credentials: 'include',
+        headers: {
+            'X-CSRFToken': csrftoken
+            },
+        body: JSON.stringify({
+            like: true
+        })
+    })
+    .then(response => response.json())
+    .then(status => console.log(status))
+}

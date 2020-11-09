@@ -18,5 +18,5 @@ class Post(models.Model):
             'author': self.author.username,
             'body': self.body,
             'time': self.time,
-            'likes': self.likes
+            'likes': self.likes.count()
         }
