@@ -130,34 +130,69 @@ async function getPosts(page) {
 
 function renderPost(post) {
 
-    // First of all we need to get an url for the author's profile
-    // I did this through a fetch request so maintainability is better
-    
-    fetch(`get-url/${post.author}`)
-    .then(response => response.json())
-    .then(object => { var url = object['url']
-        // Then we create the post div like this
+    var username = user
 
-        var div = document.createElement('div')
-        div.className = 'container border rounded'
-        div.style = 'margin-top: 1rem;'
-        div.innerHTML = `
+    // Then we create the post div like this
 
-        <h3 class='row' style='margin-left: 0.5rem; margin-right: 0.5rem; margin-top: 0.5rem;'>${post.author}</h3>
+    var div = document.createElement('div')
+    div.className = 'container border rounded'
+    div.style = 'margin-top: 1rem;'
+    div.innerHTML = `
+    <h3 class='row' style='margin-left: 0.5rem; margin-right: 0.5rem; margin-top: 0.5rem;'>${post.author}</h3>
 
-        <p class='row' style='margin-left: 0.5rem; margin-right: 0.5rem;'>${post.body}</p>
+    <p class='row' style='margin-left: 0.5rem; margin-right: 0.5rem;'>${post.body}</p>
 
-        <div class='row' style='margin-left: 0.5rem; margin-right: 0.5rem;'>
-            <div class='col'>
-                <h5 class='row justify-content-start'>${post.likes}</h5>
-            </div>
-
-            <div class='col'>
-                <p class='row justify-content-end'>${post.time}</p>
-            </div>
+    <div class='row' style='margin-left: 0.5rem; margin-right: 0.5rem;'>
+        <div class='col'>
+            <h5 class='row justify-content-start'>${post.likes}</h5>
         </div>
+
+        <div class='col'>
+            <p class='row justify-content-end'>${post.time}</p>
+        </div>
+    </div>
+    `
+
+    if (username === post.author) {
+        console.log('entered')
+        var edit = document.createElement('div')
+        edit.innerHTML = `
+        <button class='btn btn-outline-primary' style='margin-bottom: 0.5rem;'>
+        <a href='#' style='text-decoration: none; color: inherit;'>Edit Post</a>
+        </button>
         `
-        var doc_div = document.querySelector('#posts-view')
-        doc_div.appendChild(div)
-    }) 
+        edit.onclick = () => {
+            div.innerHTML = `
+
+            <form id='edit-form-${post.id}'>
+                <div class='form-group'>
+                <textarea class='row form-control' id='edit-area' name='edit-input' style='margin-left: 0.5rem; margin-right: 0.5rem;'>${post.body}</textarea>
+                </div>
+
+                <button type='submit' class='btn btn-outline-primary'>Edit</button>
+            </form>
+
+            `
+            document.querySelector(`#edit-form-${post.id}`).onsubmit = () => {
+                var new_content = document.querySelector('#edit-area').value
+                fetch(`edit/${post.id}`, {
+                    method: 'POST',
+                    mode: 'same-origin',
+                    credentials: 'include',
+                    headers: {
+                        'X-CSRFToken': csrftoken
+                    },
+                    body: JSON.stringify({
+                        post_content: new_content
+                    })
+                })
+                .then(result => console.log(result))
+                .then(function () {getPosts(1)})
+                return false;
+            }
+        }
+        div.appendChild(edit)
+    }
+    var doc_div = document.querySelector('#posts-view')
+    doc_div.appendChild(div)
 }

@@ -18,5 +18,7 @@ urlpatterns = [
     path('user/<profile_name>/posts/<int:page>', views.userPosts, name='user_posts'),
     path('user/get-url/<user>', views.getUrl, name='user_get_url'),
     path('get-user', views.getUser, name='get-user'),
-    path('edit/<int:post_id>', views.editPost, name='edit-post')
+    path('user/get-user', views.getUser, name='user-get-user'),
+    path('edit/<int:post_id>', views.editPost, name='edit-post'),
+    path('user/edit/<int:post_id>', views.editPost, name='edit-post')
 ]
