@@ -90,7 +90,7 @@ async function renderPost(post) {
         return username
     }
 
-    var username = await getUsername()
+    var username = await getUsername();
 
         // Then we create the post div like this
 
@@ -144,7 +144,7 @@ async function renderPost(post) {
                     credentials: 'include',
                     headers: {
                         'X-CSRFToken': csrftoken
-                      },
+                        },
                     body: JSON.stringify({
                         post_content: new_content
                     })
@@ -155,9 +155,9 @@ async function renderPost(post) {
             }
         }
         div.appendChild(edit)
-        }
-        var doc_div = document.querySelector('#posts-view')
-        doc_div.appendChild(div)
+    }
+    var doc_div = document.querySelector('#posts-view')
+    doc_div.appendChild(div)
     }) 
 }
 
