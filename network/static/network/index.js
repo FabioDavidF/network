@@ -92,6 +92,12 @@ async function renderPost(post) {
 
     var username = await getUsername();
 
+    // Now checking if the user has already like the post
+    // So we can display the right picture and make the right
+    // Method available for they
+    var has_liked = await hasLiked(post.id)
+    console.log(`${has_liked} ${post.id}`)
+
         // Then we create the post div like this
 
         var div = document.createElement('div')
@@ -106,9 +112,17 @@ async function renderPost(post) {
 
         <p class='row' style='margin-left: 0.5rem; margin-right: 0.5rem;'>${post.body}</p>
 
-        <div class='row' style='margin-left: 0.5rem; margin-right: 0.5rem;'>
+        <div class='row' style='margin-right: 0.5rem;'>
             <div class='col'>
-                <h5 class='row justify-content-start'>${post.likes}</h5>
+                <div class='row' style='margin-left: 0.5rem;'>
+                <div id='like-img-${post.id}'>
+                <img src='https://cdn.onlinewebfonts.com/svg/img_56552.png' style='max-width: 2rem; max-height: 2rem;'>
+                </div>
+                <div id='unlike-img-${post.id}'>
+                <img src='https://cdn2.iconfinder.com/data/icons/pittogrammi/142/80-512.png' style='max-width: 2rem; max-height: 2rem;' >
+                </div>
+                <h5 class='row justify-content-start' style='margin-left: 1rem;' id='like-count-${post.id}'>${post.likes}</h5>
+                </div>
             </div>
 
             <div class='col'>
@@ -116,6 +130,8 @@ async function renderPost(post) {
             </div>
         </div>
         `
+        
+        
 
         if (username == post.author) {
         var edit = document.createElement('div')
@@ -158,11 +174,38 @@ async function renderPost(post) {
     }
     var doc_div = document.querySelector('#posts-view')
     doc_div.appendChild(div)
+
+    var like_button = document.querySelector(`#like-img-${post.id}`)
+    var unlike_button = document.querySelector(`#unlike-img-${post.id}`)
+
+    unlike_button.onclick = async () => {
+        await unlike(post.id)
+        unlike_button.style.display = 'none'
+        like_button.style.display = 'block'
+        document.querySelector(`#like-count-${post.id}`).innerHTML = await likeInfo(post.id);
+    }
+
+    like_button.onclick = async () => {
+        await like(post.id);
+        like_button.style.display = 'none'
+        unlike_button.style.display = 'block'
+        document.querySelector(`#like-count-${post.id}`).innerHTML = await likeInfo(post.id);
+    }
+
+    if (has_liked === true) {
+        unlike_button.style.display = 'block'
+        like_button.style.display = 'none'
+        
+    } else if (has_liked === false) {
+        like_button.style.display = 'block';
+        unlike_button.style.display = 'none';
+        
+    }
     }) 
 }
 
-function like (post_id) {
-    fetch(`like/${post_id}`, {
+async function like(post_id) {
+    const response = await fetch(`like/${post_id}`, {
         method: 'POST',
         mode: 'same-origin',
         credentials: 'include',
@@ -173,6 +216,33 @@ function like (post_id) {
             like: true
         })
     })
-    .then(response => response.json())
-    .then(status => console.log(status))
+    console.log(response)
+}
+
+async function unlike(post_id) {
+    const response = await fetch(`like/${post_id}`, {
+        method: 'POST',
+        mode: 'same-origin',
+        credentials: 'include',
+        headers: {
+            'X-CSRFToken': csrftoken
+            },
+        body: JSON.stringify({
+            like: false
+        })
+    })
+    console.log(response)
+}
+
+async function hasLiked(post_id) {
+    const response = await fetch(`has-liked/${post_id}`);
+    const json = await response.json();
+    const state = json.status;
+    return state;
+}
+
+async function likeInfo(post_id) {
+    const response = await fetch(`like-info/${post_id}`);
+    const json = await response.json();
+    return json.likes;
 }

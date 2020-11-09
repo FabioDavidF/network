@@ -21,5 +21,10 @@ urlpatterns = [
     path('user/get-user', views.getUser, name='user-get-user'),
     path('edit/<int:post_id>', views.editPost, name='edit-post'),
     path('user/edit/<int:post_id>', views.editPost, name='edit-post'),
-    path('like/<int:post_id>', views.like, name='like')
+    path('like/<int:post_id>', views.like, name='like'),
+    path('user/like/<int:post_id>', views.like, name='user-like'),
+    path('has-liked/<int:post_id>', views.hasLiked, name='has-liked'),
+    path('user/has-liked/<int:post_id>', views.hasLiked, name='user-has-liked'),
+    path('like-info/<int:post_id>', views.likeInfo, name='like-info'),
+    path('user/like-info/<int:post_id>', views.likeInfo, name='like-info')
 ]

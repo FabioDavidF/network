@@ -242,3 +242,22 @@ def like(request, post_id):
             post.likes.remove(liker_instance)
             post.save()
             return HttpResponse(status=200)
+    else:
+        return HttpResponseRedirect(reverse('login'))
+
+def hasLiked(request, post_id):
+    if request.method == 'GET':
+        post = Post.objects.get(pk=post_id)
+        user = User.objects.get(pk=request.user.id)
+        if user in post.likes.all():
+            print('Ta nos like')
+            return JsonResponse({'status': True})
+        else:
+            print('ta nao')
+            return JsonResponse({'status': False})
+    else:
+        return HttpResponse(status=204)
+
+def likeInfo(request, post_id):
+    post = Post.objects.get(pk=post_id)
+    return JsonResponse({'likes': post.likes.count()})
