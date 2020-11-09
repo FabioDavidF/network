@@ -73,14 +73,25 @@ async function getPosts(kind, page) {
     }
 }
 
-function renderPost(post) {
+async function renderPost(post) {
 
     // First of all we need to get an url for the author's profile
     // I did this through a fetch request so maintainability is better
     
     fetch(`get-url/${post.author}`)
     .then(response => response.json())
-    .then(object => { var url = object['url']
+    .then(async object => { var url = object['url']
+
+    // Then we need to check if the post author is the current user
+    async function getUsername() {  
+        var response = await fetch('get-user')
+        const json = await response.json()
+        var username = json.username
+        return username
+    }
+
+    var username = await getUsername()
+
         // Then we create the post div like this
 
         var div = document.createElement('div')
@@ -105,6 +116,44 @@ function renderPost(post) {
             </div>
         </div>
         `
+
+        if (username == post.author) {
+        var edit = document.createElement('div')
+        edit.innerHTML = `
+        <a href='#' style='text-decoration: none; color: inherit;'>Edit Post</a>
+        `
+        edit.onclick = () => {
+            div.innerHTML = `
+
+            <form id='edit-form-${post.id}'>
+                <div class='form-group'>
+                <textarea class='row form-control' id='edit-area' name='edit-input' style='margin-left: 0.5rem; margin-right: 0.5rem;'>${post.body}</textarea>
+                </div>
+
+                <button type='submit' class='btn btn-outline-primary'>Edit</button>
+            </form>
+
+            `
+            document.querySelector(`#edit-form-${post.id}`).onsubmit = () => {
+                var new_content = document.querySelector('#edit-area').value
+                fetch(`edit/${post.id}`, {
+                    method: 'POST',
+                    mode: 'same-origin',
+                    credentials: 'include',
+                    headers: {
+                        'X-CSRFToken': csrftoken
+                      },
+                    body: JSON.stringify({
+                        post_content: new_content
+                    })
+                })
+                .then(result => console.log(result))
+                .then(function () {getPosts('all', 1)})
+            return false;
+            }
+        }
+        div.appendChild(edit)
+        }
         var doc_div = document.querySelector('#posts-view')
         doc_div.appendChild(div)
     }) 

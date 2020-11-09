@@ -211,3 +211,18 @@ def followInfo(request, profile_name):
     print({'followers': followers, 'following': following})
     return JsonResponse({'followers': followers, 'following': following})
 
+def getUser(request):
+    return JsonResponse({'username': request.user.username})
+
+def editPost(request, post_id):
+    if request.method == 'POST' and request.user.is_authenticated:
+        post = Post.objects.get(pk=post_id)
+        post_data = json.loads(request.body)
+        print(post_data)
+        post_body = post_data.get('post_content')
+        post.body = post_body
+        print(post_body)
+        post.save()
+        return HttpResponse(status=200)
+    else:
+        return HttpResponseRedirect(reverse('index'))
