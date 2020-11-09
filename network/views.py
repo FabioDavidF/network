@@ -5,7 +5,7 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
 from datetime import datetime
-from .models import User, Post, Comment
+from .models import User, Post
 from django.core.paginator import Paginator
 
 

@@ -10,7 +10,7 @@ class Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='p_author')
     body = models.TextField(max_length=500)
     time = models.TextField() #Added when creating object with the API
-    likes = models.IntegerField(default=0)
+    likes = models.ManyToManyField(User, blank=True, related_name='p_likes')
 
     def serialize(self):
         return {
@@ -20,10 +20,3 @@ class Post(models.Model):
             'time': self.time,
             'likes': self.likes
         }
-
-class Comment(models.Model):
-    post_commented = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='c_post')
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='c_author')
-    body = models.TextField(max_length=500)
-    time = models.TextField() #Added when creating object with the API
-    likes = models.IntegerField(default=0)
