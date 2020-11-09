@@ -1,11 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
     // by default load all posts page
-    getPosts('all')
+    getPosts('all', 1)
 
     // Adding the onclick to the following button
-    document.querySelector('#following-button').onclick = function () {
-        console.log('yeet')
-        getPosts('following')}
+    document.querySelector('#following-button').onclick = function () {getPosts('following', 1)}
 
     // adding onsubmit to new post
     document.querySelector('#new-post-form').onsubmit = function () {
@@ -24,22 +22,55 @@ document.addEventListener('DOMContentLoaded', () => {
             })
         })
         .then(result => console.log(result))
-        .then(function () {getPosts('all')})
+        .then(function () {getPosts('all', 1)})
     return false;
     }
 })
 
 
-function getPosts(kind) {
+async function getPosts(kind, page) {
     // Clearing out the posts
     document.querySelector('#posts-view').innerHTML = ''
 
-    fetch(`posts/${kind}`)
+    fetch(`posts/${kind}/${page}`)
     .then(response => response.json())
-    .then(posts => {
-        console.log(posts)
-        posts.forEach(renderPost)
+    .then(post => {
+        console.log(post)
+        post.forEach(renderPost)
     })
+
+    async function hasNext(kind, page)  {
+        var next_page = page+1;
+        const response = await fetch(`posts/${kind}/${next_page}`);
+        const result = await response.json()
+        console.log(result)
+        if (result === false) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    has_next = await hasNext(kind, page);
+    if (has_next === false) {
+        document.querySelector('#next-button').style.display = 'none'
+    } else {
+        document.querySelector('#next-button').style.display = 'block'
+        document.querySelector('#next-button').onclick = () => {
+            next_page = page+1
+            getPosts(kind, next_page)
+        }
+    }
+
+    if (page === 1) {
+        document.querySelector('#previous-button').style.display = 'none'
+    } else {
+        document.querySelector('#previous-button').style.display = 'block'
+        document.querySelector('#previous-button').onclick = () => {
+            previous_page = page-1
+            getPosts(kind, previous_page)
+        }
+    }
 }
 
 function renderPost(post) {

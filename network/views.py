@@ -6,6 +6,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from datetime import datetime
 from .models import User, Post, Comment
+from django.core.paginator import Paginator
 
 
 def index(request):
@@ -83,18 +84,24 @@ def createPost(request):
         return JsonResponse({'error': 'POST request required.'}, status=400)
 
 
-def getPosts(request, kind):
+def getPosts(request, kind, page):
     if request.method != 'GET':
         return JsonResponse({'error': 'GET request required.'}, status=400)
     else:
         if kind =='all':
             posts = Post.objects.all()
-            posts = posts.order_by('-time').all()
+            posts = posts.order_by('-id').all()
             dict_list = []
             for post in posts:
                 new_post = post.serialize()
                 dict_list.append(new_post)
-            return JsonResponse(dict_list, safe=False)
+            last_post = page*10
+            first_post = last_post - 10
+            new_list = dict_list[first_post:last_post]
+            if new_list != []:
+                return JsonResponse(new_list, safe=False)
+            else:
+                return JsonResponse(False, safe=False)
         elif kind == 'following':
             if request.user.is_authenticated:
                 dict_list = []   
@@ -103,11 +110,35 @@ def getPosts(request, kind):
                     for post in posts:
                         dic = post.serialize()
                         dict_list.append(dic)
-                return JsonResponse(dict_list, safe=False)
+                last_post = page*10
+                first_post = last_post - 10
+                new_list = dict_list[first_post:last_post]
+                if new_list != []:
+                    return JsonResponse(new_list, safe=False)
+                else:
+                    return JsonResponse(False, safe=False)
             else:
-                return HttpResponseRedirect(reverse('index'))
+                return HttpResponseRedirect(reverse('login'))
         else:
             return JsonResponse({'error': 'Invalid posts kind, use /all or /following.'}, status=400)
+
+def userPosts(request, page, profile_name):
+    profile_user = User.objects.get(username=profile_name)
+    posts = Post.objects.filter(author=profile_user)
+    posts = posts.order_by('-id').all()
+    dict_list = []
+    for post in posts:
+        new_post = post.serialize()
+        dict_list.append(new_post)
+    last_post = page*10
+    first_post = last_post - 10
+    new_list = dict_list[first_post:last_post]
+    print(new_list)
+    if new_list != []:
+        return JsonResponse(new_list, safe=False)
+    else:
+        return JsonResponse(False, safe=False)
+        
 
 def viewProfile(request, profile_name):
     user = User.objects.get(username=profile_name)
